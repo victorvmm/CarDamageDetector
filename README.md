@@ -13,7 +13,7 @@ Tarefa 2: Qual o tipo de dano? (C)
 Tarefa 3: Qual a severidade do dano? (R)
 
 Engineering/Ops:
-
+    
 CI/CD pipeline: configure um github action que, a cada commit, roda testes unitários. O teste deve verificar se o modelo consegue processar diferentes tamanhos de imagem sem quebrar e se as três cabeças da rede retornam valores no range esperado
 
 API de alta performance: deploy com FastAPI e Gunicorn, usando Pydantic para validar imagem enviada não corrompida
