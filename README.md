@@ -29,3 +29,4 @@ https://cardd-ustc.github.io/ - CarDD (Tarefa 2)
 
 https://www.kaggle.com/datasets/prajwalbhamere/car-damage-severity-dataset/data?select=data3a - Tarefa 3
 
+dataset - vmm9050/CDD_vmm
