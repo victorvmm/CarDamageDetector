@@ -6,11 +6,9 @@ CNN (MTL):
 
 Rede neural com backbone compartilhado que se divide em múltiplas heads para realizar tarefas simultaneas a partir de uma unica imagem
 
-Tarefa 1: Qual parte do carro está danificada? (C)
+Tarefa 1: Qual o tipo de dano? (C)
 
-Tarefa 2: Qual o tipo de dano? (C)
-
-Tarefa 3: Qual a severidade do dano? (R)
+Tarefa 2: Qual a severidade do dano? (C)
 
 Engineering/Ops:
     
@@ -26,13 +24,9 @@ Usar Hugging Face para armazenar imagens e dados - CHECK
 
 # Fonte
 
-https://www.kaggle.com/datasets/humansintheloop/car-parts-and-car-damages?select=Car+damages+dataset - Tarefa 1
+https://cardd-ustc.github.io/ - CarDD (Tarefa 1)
 
-https://cardd-ustc.github.io/ - CarDD (Tarefa 2)
-
-https://www.kaggle.com/datasets/prajwalbhamere/car-damage-severity-dataset/data?select=data3a - Tarefa 3
-
-https://www.huggingface.co/datasets/vmm9050/CDD_vmm - dataset
+https://www.kaggle.com/datasets/prajwalbhamere/car-damage-severity-dataset/data?select=data3a - Tarefa 2
 
 ## Estudos
 
