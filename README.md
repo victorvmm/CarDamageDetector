@@ -1,7 +1,7 @@
 # CarDamageDetector
 Car damage detector model - Multi-task learning CNN
 
-# Descricao
+# Descrição
 CNN (MTL):
 
 Rede neural com backbone compartilhado que se divide em múltiplas heads para realizar tarefas simultaneas a partir de uma unica imagem
@@ -20,6 +20,11 @@ API de alta performance: deploy com FastAPI e Gunicorn, usando Pydantic para val
 
 Dockerizar tudo
 
+# Ideias
+
+Usar Hugging Face para armazenar imagens e dados
+
+data em .gitignore
 
 # Fonte
 
