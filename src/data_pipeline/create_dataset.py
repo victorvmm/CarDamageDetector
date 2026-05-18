@@ -5,7 +5,7 @@ from src import config
 from src.data_pipeline.transforms import load_img_info
 
 def load_annotations(json_path):
-    """Carrega as anotações do JSON mapeando o ID da imagem para a categoria."""
+    # Loads json annotations, mapping image id to its type of damage
     if not os.path.exists(json_path):
         return {}
     
@@ -14,43 +14,41 @@ def load_annotations(json_path):
     
     mapping = {}
     for annot in data.get("annotations", []):
-        # Mapeia image_id -> category_id (Dano)
+        # Maps image_id -> category_id (Damage)
         mapping[annot.get('image_id')] = annot.get('category_id')
     return mapping
 
 def build_dataset_lists(dir_dmg, json_path, dir_sev, severity_labels_distribution):
-    """
-    Garante o pareamento correto entre caminhos de arquivo e rótulos [Dano, Severidade]
-    """
+    # Secures correct pairing between file paths and labels
     file_paths = []
     labels = []
     
-    # 1. Processando Dataset 1 (Apenas Danos anotados no COCO/JSON)
+    # 1. Processing Dataset 1 (Damage annotations on COCO/JSON)
     dmg_mapping = load_annotations(json_path)
     if os.path.exists(dir_dmg):
         for filename in os.listdir(dir_dmg):
             full_path = os.path.join(dir_dmg, filename)
             if os.path.isfile(full_path):
-                # Extrai o ID numérico do arquivo (ex: "000000123.jpg" -> 123)
+                # Extracts file ID (ex: "000000123.jpg" -> 123)
                 try:
                     img_id = int(os.path.splitext(filename)[0])
                 except ValueError:
                     continue
                 
-                # Se não achar no JSON, define como -1 (ausente)
+                # If it does not find in JSON, defines as -1 (missing)
                 label_dano = dmg_mapping.get(img_id, -1)
                 
                 file_paths.append(full_path)
-                # Como veio do DS1, não temos a severidade estruturada aqui -> -1
+                # As it comes from dataset 1, there isn't severity -> -1
                 labels.append([label_dano, -1])
 
-    # 2. Processando Dataset 2 (Apenas Severidade organizada em subpastas)
-    # severity_labels_distribution deve ser uma lista com a ordem esperada das subpastas, ex: [7, 8, 9]
+    # 2. Processing Dataset 2 (Only severity, all images organized based on its directory, each directory is a class)
+    # severity_labels_distribution must be a list with the expected subfolder organization, ex: [7, 8, 9]
     if os.path.exists(dir_sev):
         subdirs = sorted([d for d in os.listdir(dir_sev) if os.path.isdir(os.path.join(dir_sev, d))])
         
         for idx, subdir in enumerate(subdirs):
-            # Garante que não estoure o índice mapeado de severidades passadas
+            # Secures that index mapping from last severities doesn't blow
             if idx < len(severity_labels_distribution):
                 current_sev_label = severity_labels_distribution[idx]
                 subdir_path = os.path.join(dir_sev, subdir)
@@ -59,29 +57,28 @@ def build_dataset_lists(dir_dmg, json_path, dir_sev, severity_labels_distributio
                     for file in files:
                         full_path = os.path.join(root, file)
                         file_paths.append(full_path)
-                        # Como veio do DS2, temos severidade, mas não temos o tipo de dano -> -1
+                        # As it comes from dataset 2, there is severity, but not the type of damage
                         labels.append([-1, current_sev_label])
                         
     return file_paths, labels
 
 def get_train_val_datasets():
-    """Gera e retorna as instâncias prontas de tf.data.Dataset para Treino e Validação."""
+    # Generates and returns training, validation and testing tf.data.Dataset instances
+
+    # Folder 1 -> Severity: minor (1), Folder 2 -> Severity: moderate (2), Folder 3 -> Severity: severe (3)
+    sev_distribution = [1, 2, 3]
     
-    # Configuração da distribuição de severidade baseado nas subpastas sequenciais do seu DS2
-    # Pasta 1 -> Severidade 7, Pasta 2 -> Severidade 8, Pasta 3 -> Severidade 9
-    sev_distribution = [7, 8, 9]
-    
-    # Construindo listas de treino
+    # Building training lists
     train_files, train_labels = build_dataset_lists(
         config.DIR_TRAIN_DMG, config.JSON_TRAIN_PATH, config.DIR_TRAIN_SEV, sev_distribution
     )
     
-    # Construindo listas de validação
+    # Building validation lists
     val_files, val_labels = build_dataset_lists(
         config.DIR_VAL_DMG, config.JSON_VAL_PATH, config.DIR_VAL_SEV, sev_distribution
     )
     
-    # Criando os Tensores com tf.data
+    # Creating tf.data tensors
     train_dataset = tf.data.Dataset.from_tensor_slices((train_files, train_labels))
     train_dataset = train_dataset.map(load_img_info, num_parallel_calls=tf.data.AUTOTUNE)
     train_dataset = train_dataset.shuffle(buffer_size=config.BUFFER_SIZE)
@@ -92,3 +89,13 @@ def get_train_val_datasets():
     val_dataset = val_dataset.batch(config.BATCH_SIZE).prefetch(tf.data.AUTOTUNE)
     
     return train_dataset, val_dataset
+
+# Returns testing dataset
+def get_test_dataset():
+    files_paths = []
+    if os.path.exists(config.DIR_TEST):
+        for filename in os.listdir(config.DIR_TEST):
+            full_path = os.path.join(config.DIR_TEST, filename)                
+            files_paths.append(full_path)
+    test_dataset = tf.data.Dataset.from_tensor_slices(files_paths)
+    return test_dataset

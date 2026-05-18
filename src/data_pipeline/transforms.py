@@ -8,8 +8,8 @@ def load_img_info(path, label):
     img = tf.image.resize(img, [config.IMG_HEIGHT, config.IMG_WIDTH]) # Resize
     img = img / 255.0  # Normalization
 
-    # Unpachk pipeline labels
+    # Unpack pipeline labels
     label_dmg = label[0]
     label_severity = label[1]
 
-    return img, (label_dmg, label_severity)
+    return img, (label_dmg, label_severity) # returns x, y
