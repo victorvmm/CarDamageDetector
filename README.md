@@ -22,6 +22,11 @@ Dockerizar tudo - criar DockerFile
 
 Criar notebook para data viz - imagens
 
+1ª etapa: transfer learning clássico - rodar com modelo base congelado
+2ª etapa: fine tuning com descongelamento das camadas finais do modelo base com taxa de aprendizado menor (para não quebrar os pesos da 1ª etapa)
+
+ADICIONAR VENV
+
 ## Dataset
 
 Valor sentinela:
