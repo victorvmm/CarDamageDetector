@@ -15,7 +15,7 @@ def load_annotations(json_path):
     mapping = {}
     for annot in data.get("annotations", []):
         # Maps image_id -> category_id (Damage)
-        mapping[annot.get('image_id')] = annot.get('category_id')
+        mapping[annot.get('image_id')] = annot.get('category_id') - 1
     return mapping
 
 def build_dataset_lists(dir_dmg, json_path, dir_sev, severity_labels_distribution):
@@ -43,7 +43,7 @@ def build_dataset_lists(dir_dmg, json_path, dir_sev, severity_labels_distributio
                 labels.append([label_dano, -1])
 
     # 2. Processing Dataset 2 (Only severity, all images organized based on its directory, each directory is a class)
-    # severity_labels_distribution must be a list with the expected subfolder organization, ex: [7, 8, 9]
+    # severity_labels_distribution must be a list with the expected subfolder organization, ex: [1, 2, 3]
     if os.path.exists(dir_sev):
         subdirs = sorted([d for d in os.listdir(dir_sev) if os.path.isdir(os.path.join(dir_sev, d))])
         
@@ -65,8 +65,8 @@ def build_dataset_lists(dir_dmg, json_path, dir_sev, severity_labels_distributio
 def get_train_val_datasets():
     # Generates and returns training, validation and testing tf.data.Dataset instances
 
-    # Folder 1 -> Severity: minor (1), Folder 2 -> Severity: moderate (2), Folder 3 -> Severity: severe (3)
-    sev_distribution = [1, 2, 3]
+    # Folder 1 -> Severity: minor (0), Folder 2 -> Severity: moderate (1), Folder 3 -> Severity: severe (2)
+    sev_distribution = [0, 1, 2]
     
     # Building training lists
     train_files, train_labels = build_dataset_lists(

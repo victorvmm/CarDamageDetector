@@ -2,28 +2,28 @@ import tensorflow as tf
 
 from tensorflow.keras.models import Model
 from tensorflow.keras.applications import EfficientNetV2B3
-from tensorflow.keras.layers import Dense, GlobalAveragePooling2D
+from tensorflow.keras.layers import Dense, GlobalAveragePooling2D, Dropout
 
 
 class MyModel(Model):
     def __init__(self, input_shape, **kwargs):
         super(MyModel, self).__init__(**kwargs)
         self.base_model = EfficientNetV2B3(include_top=False, weights='imagenet', input_shape=input_shape)
+        self.base_model.trainable = False
         self.pool = GlobalAveragePooling2D()
-        self.dense1 = Dense(units=128, activation='relu')
-        self.dense2 = Dense(units=64, activation='relu')
+        self.dense = Dense(units=256, activation='relu')
+        self.drop = Dropout(0.3)
         self.out1 = Dense(6, activation='softmax')
         self.out2 = Dense(3, activation='softmax')
 
-    def call(self, inputs, trainable=False):
-        self.base_model.trainable = trainable
+    def call(self, inputs):
         x = self.base_model(inputs)
         x = self.pool(x)
-        x = self.dense1(x)
-        x = self.dense2(x)
+        x = self.dense(x)
+        x = self.drop(x)
         output1 = self.out1(x)
         output2 = self.out2(x)
-        return (output1, output2)
+        return {'out1': output1, 'out2': output2}
     
 
 def masked_sparse_loss(y_true, y_pred):
