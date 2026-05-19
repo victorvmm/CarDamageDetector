@@ -9,22 +9,22 @@ class MyModel(Model):
         super(MyModel, self).__init__(**kwargs)
 
         # Block 1: border detection
-        self.conv1 = Conv2D(filters=32, kernel_size=(3,3), padding='same', kernel_regularizer=tf.keras.regularizers.l2(1e-4))
+        self.conv1 = Conv2D(filters=32, kernel_size=(3,3), padding='same')
         self.bn1 = BatchNormalization()
         self.pool1 = MaxPooling2D(pool_size=(2,2))
 
         # Block 2: detecting shapes
-        self.conv2 = Conv2D(filters=64, kernel_size=(3,3), padding='same', kernel_regularizer=tf.keras.regularizers.l2(1e-4))
+        self.conv2 = Conv2D(filters=64, kernel_size=(3,3), padding='same')
         self.bn2 = BatchNormalization()
         self.pool2 = MaxPooling2D(pool_size=(2,2))
 
         # Block 3: detecting textures
-        self.conv3 = Conv2D(filters=128, kernel_size=(3,3), padding='same', kernel_regularizer=tf.keras.regularizers.l2(1e-4))
+        self.conv3 = Conv2D(filters=128, kernel_size=(3,3), padding='same')
         self.bn3 = BatchNormalization()
         self.pool3 = MaxPooling2D(pool_size=(2,2))
 
         # Block 4: high semantic
-        self.conv4 = Conv2D(filters=128, kernel_size=(3,3), padding='same', kernel_regularizer=tf.keras.regularizers.l2(1e-4))
+        self.conv4 = Conv2D(filters=128, kernel_size=(3,3), padding='same')
         self.bn4 = BatchNormalization()
         self.pool4 = MaxPooling2D(pool_size=(2,2))
 

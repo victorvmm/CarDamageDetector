@@ -7,12 +7,6 @@ def load_img_info(path, label):
     img = tf.image.decode_jpeg(img_bytes, channels=config.CHANNELS) # Decode
     img = tf.image.resize(img, [config.IMG_HEIGHT, config.IMG_WIDTH]) # Resize
 
-    # Crop
-    img = tf.image.random_crop(
-        img,
-        size=[48, 48, 3]
-    )
-
     # Image augmentation
 
     # Horizontal flip

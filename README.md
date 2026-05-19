@@ -61,7 +61,7 @@ ADICIONAR VENV
 
 # Aprender
 
-
+Dada a sugestão de usar YOLO para aumentar a acurácia do modelo, acha que vale a pena eu aprender visão computacional para este projeto? Se sim, como eu aplicaria nele? Eu teria que remover a parte de image augmentation? O processamento das imagens pelo YOLO faria parte da pipeline de dados?
 
 O que poderia ser melhorado: crop usando YOLO, aumenta acurácia
 
