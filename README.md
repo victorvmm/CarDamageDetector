@@ -12,7 +12,7 @@ Tarefa 2: Qual a severidade do dano? (C)
 
 Engineering/Ops:
     
-CI/CD pipeline: configure um github action que, a cada commit, roda testes unitários. O teste deve verificar se o modelo consegue processar diferentes tamanhos de imagem sem quebrar e se as três cabeças da rede retornam valores no range esperado. Criar arquivo .github/workflows
+CI/CD pipeline: configure um github action que, a cada commit, roda testes unitários. O teste deve verificar se o modelo consegue processar diferentes tamanhos de imagem sem quebrar e se as duas cabeças da rede retornam valores no range esperado. Criar arquivo .github/workflows
 
 API de alta performance: deploy com FastAPI e Gunicorn, usando Pydantic para validar imagem enviada não corrompida
 
@@ -42,8 +42,6 @@ Os blocos são conectados, por fim, às heads das tarefas por meio do GlobalAVGp
 
 Próximos testes: 
 - testar modelo sem o quarto bloco convolucional 
-- testar modelo sem data augmentation
-- testar modelo com AvgPooling ao invés de maxpooling
 
 Criar função que faz gráfico de accuracy x epoch e loss x epoch de cada saída
 
