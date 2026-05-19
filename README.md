@@ -18,33 +18,52 @@ API de alta performance: deploy com FastAPI e Gunicorn, usando Pydantic para val
 
 Dockerizar tudo - criar DockerFile
 
-# Ideias
+# Técnicas usadas
+MTL - soft parameter sharing
+Data augmentation
+Valor sentinela
+Loss function customizada
+
+# Abordagem
+
+Usando soft parameter sharing
+
+Abordagem 1: transfer learning com EfficientNetV2B3 - 27% de accuracy da saída 1 e 16% da saída 2
+Underfitting, modelo muito complexo para um dataset relativamente pequeno, motivo dos erros. (+-13M de parâmetros)
+1ª etapa: transfer learning clássico - rodar com modelo base congelado
+2ª etapa: fine tuning com descongelamento das 30 camadas finais do modelo base com taxa de aprendizado 0.00001 (para não quebrar os pesos da 1ª etapa)
+
+Abordagem 2: CNN criada do zero - 36.7% de accuracy da saída 1 e 18.7% da saída 2
+Utiliza quatro blocos convolucionais, compostos por uma camada convolucional, uma de normalização, uma função de ativação e uma camada de maxpooling
+Os blocos são conectados, por fim, às heads das tarefas por meio do GlobalAVGpool
+
+
+# A FAZER
+
+Próximos testes: 
+- testar modelo sem o quarto bloco convolucional 
+- testar modelo sem data augmentation
+- testar modelo com AvgPooling ao invés de maxpooling
+
+Criar função que faz gráfico de accuracy x epoch e loss x epoch de cada saída
 
 Criar notebook para data viz - imagens
 
-1ª etapa: transfer learning clássico - rodar com modelo base congelado
-2ª etapa: fine tuning com descongelamento das camadas finais do modelo base com taxa de aprendizado menor (para não quebrar os pesos da 1ª etapa)
+Criar API
 
-Tentativas de estrutura de modelo mtl:
+Criar dockerfile
 
-Hard parameter sharing: 26% de acurácia da saída 1 e 16% da saída 2
+Criar testes de modelo, API e dados
 
-Soft parameter sharing: 
+Apagar commits que possuem o usuario (. ate .)
 
 ADICIONAR VENV
 
-## Dataset
+# Aprender
 
-Valor sentinela:
-unificar anotações em um único arquivo, usando um valor sentinela (-1) para representar o que está faltando
 
-## Testar modelo customizado por transfer learning e fine tuning
-EfficientNet - 
 
-EfficientNetV2B3 - 
-
-EfficientNetV2B1 -
-
+O que poderia ser melhorado: crop usando YOLO, aumenta acurácia
 
 # Fonte
 

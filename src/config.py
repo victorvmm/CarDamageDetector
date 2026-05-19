@@ -1,13 +1,11 @@
 import os
 
-# Image dimensions (HD)
+# Image dimensions 
 IMG_HEIGHT = 224
 IMG_WIDTH = 224
 CHANNELS = 3
 
-# Pipelines hyperparameters
 BATCH_SIZE = 32
-BUFFER_SIZE = 5000 
 
 # Data paths
 DATA_DIR = os.path.abspath(os.path.join(os.path.dirname(__file__), "..", "data"))

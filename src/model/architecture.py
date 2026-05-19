@@ -1,28 +1,79 @@
 import tensorflow as tf
 
 from tensorflow.keras.models import Model
-from tensorflow.keras.applications import EfficientNetV2B3
-from tensorflow.keras.layers import Dense, GlobalAveragePooling2D, Dropout
+from tensorflow.keras.layers import Dense, BatchNormalization, Dropout, MaxPooling2D, Conv2D, GlobalAveragePooling2D, Input
 
 
 class MyModel(Model):
-    def __init__(self, input_shape, **kwargs):
+    def __init__(self, **kwargs):
         super(MyModel, self).__init__(**kwargs)
-        self.base_model = EfficientNetV2B3(include_top=False, weights='imagenet', input_shape=input_shape)
-        self.base_model.trainable = False
-        self.pool = GlobalAveragePooling2D()
-        self.dense = Dense(units=256, activation='relu')
-        self.drop = Dropout(0.3)
-        self.out1 = Dense(6, activation='softmax')
-        self.out2 = Dense(3, activation='softmax')
 
-    def call(self, inputs):
-        x = self.base_model(inputs)
-        x = self.pool(x)
-        x = self.dense(x)
-        x = self.drop(x)
-        output1 = self.out1(x)
-        output2 = self.out2(x)
+        # Block 1: border detection
+        self.conv1 = Conv2D(filters=32, kernel_size=(3,3), padding='same', kernel_regularizer=tf.keras.regularizers.l2(1e-4))
+        self.bn1 = BatchNormalization()
+        self.pool1 = MaxPooling2D(pool_size=(2,2))
+
+        # Block 2: detecting shapes
+        self.conv2 = Conv2D(filters=64, kernel_size=(3,3), padding='same', kernel_regularizer=tf.keras.regularizers.l2(1e-4))
+        self.bn2 = BatchNormalization()
+        self.pool2 = MaxPooling2D(pool_size=(2,2))
+
+        # Block 3: detecting textures
+        self.conv3 = Conv2D(filters=128, kernel_size=(3,3), padding='same', kernel_regularizer=tf.keras.regularizers.l2(1e-4))
+        self.bn3 = BatchNormalization()
+        self.pool3 = MaxPooling2D(pool_size=(2,2))
+
+        # Block 4: high semantic
+        self.conv4 = Conv2D(filters=128, kernel_size=(3,3), padding='same', kernel_regularizer=tf.keras.regularizers.l2(1e-4))
+        self.bn4 = BatchNormalization()
+        self.pool4 = MaxPooling2D(pool_size=(2,2))
+
+        # High performance connector
+        self.gap = GlobalAveragePooling2D()
+
+        # Head for task 1
+        self.dense_dmg = Dense(units=64, activation='relu')
+        self.drop_dmg = Dropout(0.3)
+        self.out_dmg = Dense(6, activation='softmax')
+
+        # Head for task 2
+        self.dense_sev = Dense(units=64, activation='relu')
+        self.drop_sev = Dropout(0.3)
+        self.out_sev = Dense(3, activation='softmax')
+
+    def call(self, inputs, training=False):
+        x = self.conv1(inputs)
+        x = self.bn1(x, training=training) # BN precisa saber se está em treino!
+        x = tf.nn.relu(x)
+        x = self.pool1(x)
+        
+        # Block 2
+        x = self.conv2(x)
+        x = self.bn2(x, training=training)
+        x = tf.nn.relu(x)
+        x = self.pool2(x)
+        
+        # Block 3
+        x = self.conv3(x)
+        x = self.bn3(x, training=training)
+        x = tf.nn.relu(x)
+        x = self.pool3(x)
+        
+        # Block 4
+        x = self.conv4(x)
+        x = self.bn4(x, training=training)
+        x = tf.nn.relu(x)
+        x = self.pool4(x)
+        
+        x_shared = self.gap(x)
+
+        x_dmg = self.dense_dmg(x_shared)
+        x_dmg = self.drop_dmg(x_dmg, training=training)
+        output1 = self.out_dmg(x_dmg)
+
+        x_sev = self.dense_sev(x_shared)
+        x_sev = self.drop_sev(x_sev, training=training)
+        output2 = self.out_sev(x_sev)
         return {'out1': output1, 'out2': output2}
     
 

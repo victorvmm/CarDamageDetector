@@ -81,11 +81,12 @@ def get_train_val_datasets():
     # Creating tf.data tensors
     train_dataset = tf.data.Dataset.from_tensor_slices((train_files, train_labels))
     train_dataset = train_dataset.map(load_img_info, num_parallel_calls=tf.data.AUTOTUNE)
-    train_dataset = train_dataset.shuffle(buffer_size=config.BUFFER_SIZE)
+    train_dataset = train_dataset.shuffle(buffer_size=len(train_dataset))
     train_dataset = train_dataset.batch(config.BATCH_SIZE).prefetch(tf.data.AUTOTUNE)
     
     val_dataset = tf.data.Dataset.from_tensor_slices((val_files, val_labels))
     val_dataset = val_dataset.map(load_img_info, num_parallel_calls=tf.data.AUTOTUNE)
+    val_dataset = val_dataset.shuffle(buffer_size=len(val_dataset))
     val_dataset = val_dataset.batch(config.BATCH_SIZE).prefetch(tf.data.AUTOTUNE)
     
     return train_dataset, val_dataset
