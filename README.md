@@ -40,10 +40,7 @@ Os blocos são conectados, por fim, às heads das tarefas por meio do GlobalAVGp
 
 # A FAZER
 
-Próximos testes: 
-- testar modelo sem o quarto bloco convolucional 
-
-Criar função que faz gráfico de accuracy x epoch e loss x epoch de cada saída
+Aprender visão computacional, aplicar YOLO no dataset de imagens
 
 Criar notebook para data viz - imagens
 
@@ -58,8 +55,6 @@ Apagar commits que possuem o usuario (. ate .)
 ADICIONAR VENV
 
 # Aprender
-
-Dada a sugestão de usar YOLO para aumentar a acurácia do modelo, acha que vale a pena eu aprender visão computacional para este projeto? Se sim, como eu aplicaria nele? Eu teria que remover a parte de image augmentation? O processamento das imagens pelo YOLO faria parte da pipeline de dados?
 
 O que poderia ser melhorado: crop usando YOLO, aumenta acurácia
 
