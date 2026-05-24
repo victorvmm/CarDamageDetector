@@ -56,7 +56,11 @@ ADICIONAR VENV
 
 # Aprender
 
-O que poderia ser melhorado: crop usando YOLO, aumenta acurácia
+Visão computacional - YOLO 
+Docker
+FastAPI
+Pydantic + Gunicorn
+Github actions
 
 # Fonte
 
