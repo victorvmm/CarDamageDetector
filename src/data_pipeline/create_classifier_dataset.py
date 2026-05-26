@@ -13,7 +13,7 @@ def load_annotations(json_path):
         data = json.load(f)
     
     mapping = {}
-    for annot in data.get("annotations", []):
+    for annot in data.get("annotations", []): # fallback = []
         # Maps image_id -> category_id (Damage)
         mapping[annot.get('image_id')] = annot.get('category_id') - 1
     return mapping

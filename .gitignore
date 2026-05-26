@@ -1,5 +1,7 @@
 data/
 
+dataset.yaml
+
 __pycache__/
 *.py[cod]
 *.pyo

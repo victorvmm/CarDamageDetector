@@ -40,7 +40,11 @@ Os blocos são conectados, por fim, às heads das tarefas por meio do GlobalAVGp
 
 # A FAZER
 
-Aprender visão computacional, aplicar YOLO no dataset de imagens
+Opção Fácil (Downgrade): Desinstale seu TensorFlow atual e instale a versão 2.10, que é a última a suportar o Windows nativo.
+
+Bash
+pip install tensorflow==2.10
+(Você também precisará baixar e instalar o CUDA Toolkit 11.2 e o cuDNN 8.1 no site da NVIDIA e adicioná-los às Variáveis de Ambiente do Windows).
 
 Criar notebook para data viz - imagens
 
@@ -67,3 +71,17 @@ Github actions
 https://cardd-ustc.github.io/ - CarDD (Tarefa 1) - Pegar licença
 
 https://www.kaggle.com/datasets/prajwalbhamere/car-damage-severity-dataset/data?select=data3a - Tarefa 2
+
+
+# YOLO 
+
+@software{yolov8_ultralytics,
+  author = {Glenn Jocher and Ayush Chaurasia and Jing Qiu},
+  title = {Ultralytics YOLOv8},
+  version = {8.0.0},
+  year = {2023},
+  url = {https://github.com/ultralytics/ultralytics},
+  orcid = {0000-0001-5950-6979, 0000-0002-7603-6750, 0000-0003-3783-7069},
+  license = {AGPL-3.0}
+}
+
