@@ -4,7 +4,7 @@ from tensorflow.keras.callbacks import ReduceLROnPlateau
 import matplotlib.pyplot as plt
 from src.data_pipeline import get_train_val_datasets
 from src import config
-from src.model.architecture import MyModel, masked_sparse_loss
+from src.classifier.architecture import MyModel, masked_sparse_loss
 
 train_dataset, val_dataset = get_train_val_datasets()
 
@@ -27,6 +27,7 @@ def train_model(model, train_dataset, val_dataset, learning_rate):
         epochs=20, 
         validation_data=val_dataset, 
         validation_steps=30, 
+        callbacks=ReduceLROnPlateau('val_loss', 0.8),
         verbose=1
     )
     return history
@@ -91,6 +92,6 @@ def plot_mtl_history(history):
     plt.tight_layout(rect=[0, 0.03, 1, 0.95])
     plt.show()
 
-history = train_model(model, train_dataset, val_dataset, 1e-3)
+history = train_model(model, train_dataset, val_dataset, 5e-3)
 
 plot_mtl_history(history)
