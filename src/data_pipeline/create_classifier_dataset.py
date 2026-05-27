@@ -3,6 +3,7 @@ import json
 import tensorflow as tf
 from src import config
 from src.data_pipeline.transforms import load_img_info
+import random
 
 def load_annotations(json_path):
     # Loads json annotations, mapping image id to its type of damage
@@ -31,7 +32,8 @@ def build_dataset_lists(dir_dmg, json_path, dir_sev, severity_labels_distributio
             if os.path.isfile(full_path):
                 # Extracts file ID (ex: "000000123.jpg" -> 123)
                 try:
-                    img_id = int(os.path.splitext(filename)[0])
+                    full_id = int(os.path.splitext(filename)[0])
+                    img_id = int(full_id.split('_')[0])
                 except ValueError:
                     continue
                 
@@ -70,23 +72,29 @@ def get_train_val_datasets():
     
     # Building training lists
     train_files, train_labels = build_dataset_lists(
-        config.DIR_TRAIN_DMG, config.JSON_TRAIN_PATH, config.DIR_TRAIN_SEV, sev_distribution
+        config.DIR_TRAIN_DMG_CROP, config.JSON_TRAIN_PATH, config.DIR_TRAIN_SEV_CROP, sev_distribution
     )
-    
+
+    '''temp_list = list(zip(train_files, train_labels))
+    random.shuffle(temp_list)
+    train_files, train_labels = zip(*temp_list)
+    train_files = list(train_files)
+    train_labels = list(train_labels)'''
+
     # Building validation lists
     val_files, val_labels = build_dataset_lists(
-        config.DIR_VAL_DMG, config.JSON_VAL_PATH, config.DIR_VAL_SEV, sev_distribution
+        config.DIR_VAL_DMG_CROP, config.JSON_VAL_PATH, config.DIR_VAL_SEV_CROP, sev_distribution
     )
     
     # Creating tf.data tensors
     train_dataset = tf.data.Dataset.from_tensor_slices((train_files, train_labels))
     train_dataset = train_dataset.map(load_img_info, num_parallel_calls=tf.data.AUTOTUNE)
-    train_dataset = train_dataset.shuffle(buffer_size=len(train_dataset))
+    train_dataset = train_dataset.shuffle(buffer_size=config.BUFFER_SIZE)
     train_dataset = train_dataset.batch(config.BATCH_SIZE).prefetch(tf.data.AUTOTUNE)
     
     val_dataset = tf.data.Dataset.from_tensor_slices((val_files, val_labels))
     val_dataset = val_dataset.map(load_img_info, num_parallel_calls=tf.data.AUTOTUNE)
-    val_dataset = val_dataset.shuffle(buffer_size=len(val_dataset))
+    val_dataset = val_dataset.shuffle(buffer_size=config.BUFFER_SIZE)
     val_dataset = val_dataset.batch(config.BATCH_SIZE).prefetch(tf.data.AUTOTUNE)
     
     return train_dataset, val_dataset
@@ -99,4 +107,5 @@ def get_test_dataset():
             full_path = os.path.join(config.DIR_TEST, filename)                
             files_paths.append(full_path)
     test_dataset = tf.data.Dataset.from_tensor_slices(files_paths)
+    test_dataset = test_dataset.shuffle(buffer_size=config.BUFFER_SIZE)
     return test_dataset

@@ -60,8 +60,6 @@ Criar dockerfile
 
 Criar testes de modelo, API e dados
 
-Apagar commits que possuem o usuario (. ate .)
-
 # Aprender
 
 Visão computacional - YOLO 

@@ -1,6 +1,6 @@
 import tensorflow as tf
 from tensorflow.keras.optimizers import Adam
-from tensorflow.keras.callbacks import ReduceLROnPlateau
+from tensorflow.keras.callbacks import ReduceLROnPlateau, ModelCheckpoint
 import matplotlib.pyplot as plt
 from src.data_pipeline import get_train_val_datasets
 from src import config
@@ -22,12 +22,15 @@ def train_model(model, train_dataset, val_dataset, learning_rate):
         metrics={'out1': 'accuracy', 'out2': 'accuracy'}
     )
 
+    checkpoint_path = '.weights.h5'
+    checkpoint = ModelCheckpoint(checkpoint_path, save_best_only=True, save_weights_only=True)
+
     history = model.fit(
         train_dataset, 
-        epochs=20, 
+        epochs=30, 
         validation_data=val_dataset, 
         validation_steps=30, 
-        callbacks=ReduceLROnPlateau('val_loss', 0.8),
+        callbacks=[ReduceLROnPlateau('val_loss', 0.8), checkpoint],
         verbose=1
     )
     return history

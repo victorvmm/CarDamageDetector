@@ -6,6 +6,7 @@ IMG_WIDTH = 224
 CHANNELS = 3
 
 BATCH_SIZE = 32
+BUFFER_SIZE = 2000
 
 # Data paths
 DATA_DIR = os.path.abspath(os.path.join(os.path.dirname(__file__), "..", "data"))
@@ -23,3 +24,9 @@ JSON_VAL_PATH = os.path.join(DATA_DIR, "instances_val2017.json")
 
 JSON_LABELS_TRAIN_PATH = os.path.join(DATA_DIR, "raw_images", "CarDD_release", "CarDD_COCO", "labels", "train")
 JSON_LABELS_VAL_PATH = os.path.join(DATA_DIR, "raw_images", "CarDD_release", "CarDD_COCO", "labels", "val")
+
+DIR_TRAIN_DMG_CROP = os.path.join(DATA_DIR, "cropped_images", "dataset1_train")
+DIR_VAL_DMG_CROP = os.path.join(DATA_DIR, "cropped_images", "dataset1_val")
+
+DIR_TRAIN_SEV_CROP = os.path.join(DATA_DIR, "cropped_images", "dataset2_train")
+DIR_VAL_SEV_CROP = os.path.join(DATA_DIR, "cropped_images", "dataset2_val")
