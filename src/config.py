@@ -10,16 +10,16 @@ BATCH_SIZE = 32
 # Data paths
 DATA_DIR = os.path.abspath(os.path.join(os.path.dirname(__file__), "..", "data"))
 
-DIR_TRAIN_DMG = os.path.join(DATA_DIR, "raw images", "CarDD_release", "CarDD_COCO", "images", "train", "train2017")
-DIR_VAL_DMG = os.path.join(DATA_DIR, "raw images", "CarDD_release", "CarDD_COCO", "images", "val", "val2017")
+DIR_TRAIN_DMG = os.path.join(DATA_DIR, "raw_images", "CarDD_release", "CarDD_COCO", "images", "train")
+DIR_VAL_DMG = os.path.join(DATA_DIR, "raw_images", "CarDD_release", "CarDD_COCO", "images", "val")
 
-DIR_TRAIN_SEV = os.path.join(DATA_DIR, "raw images", "training")
-DIR_VAL_SEV = os.path.join(DATA_DIR, "raw images", "validation")
+DIR_TRAIN_SEV = os.path.join(DATA_DIR, "raw_images", "training")
+DIR_VAL_SEV = os.path.join(DATA_DIR, "raw_images", "validation")
 
 DIR_TEST = os.path.join(DATA_DIR, "CarDD_release", "CarDD_COCO", "test", "test2017")
 
 JSON_TRAIN_PATH = os.path.join(DATA_DIR, "instances_train2017.json")
 JSON_VAL_PATH = os.path.join(DATA_DIR, "instances_val2017.json")
 
-JSON_LABELS_TRAIN_PATH = os.path.join(DATA_DIR, "raw images", "CarDD_release", "CarDD_COCO", "labels", "train")
-JSON_LABELS_VAL_PATH = os.path.join(DATA_DIR, "raw images", "CarDD_release", "CarDD_COCO", "labels", "val")
+JSON_LABELS_TRAIN_PATH = os.path.join(DATA_DIR, "raw_images", "CarDD_release", "CarDD_COCO", "labels", "train")
+JSON_LABELS_VAL_PATH = os.path.join(DATA_DIR, "raw_images", "CarDD_release", "CarDD_COCO", "labels", "val")

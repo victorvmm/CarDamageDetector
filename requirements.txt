@@ -1,1 +1,6 @@
-Minhas bibliotecas
+numpy
+pandas
+matplotlib
+tensorflow
+opencv-contrib-python
+ultralytics

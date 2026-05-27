@@ -40,11 +40,17 @@ Os blocos são conectados, por fim, às heads das tarefas por meio do GlobalAVGp
 
 # A FAZER
 
-Opção Fácil (Downgrade): Desinstale seu TensorFlow atual e instale a versão 2.10, que é a última a suportar o Windows nativo.
+model = YOLO("runs/detect/train/weights/best.pt")
 
-Bash
-pip install tensorflow==2.10
-(Você também precisará baixar e instalar o CUDA Toolkit 11.2 e o cuDNN 8.1 no site da NVIDIA e adicioná-los às Variáveis de Ambiente do Windows).
+results = model.predict(
+    source="images/",
+    save=True,
+    save_crop=True
+) 
+
+Isso vai salvar as imagens cortadas nas partes certas
+
+Cortar as imagens e usar elas como dataset para rodar o modelo classificador MTL
 
 Criar notebook para data viz - imagens
 
@@ -55,8 +61,6 @@ Criar dockerfile
 Criar testes de modelo, API e dados
 
 Apagar commits que possuem o usuario (. ate .)
-
-ADICIONAR VENV
 
 # Aprender
 
@@ -85,3 +89,6 @@ https://www.kaggle.com/datasets/prajwalbhamere/car-damage-severity-dataset/data?
   license = {AGPL-3.0}
 }
 
+# Pacotes
+
+pip install torch torchvision torchaudio --index-url https://download.pytorch.org/whl/cu121
