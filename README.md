@@ -23,6 +23,7 @@ MTL - soft parameter sharing
 Data augmentation
 Valor sentinela
 Loss function customizada
+Oversampling no dataset 2
 
 # Abordagem
 

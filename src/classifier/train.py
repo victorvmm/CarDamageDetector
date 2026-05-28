@@ -18,7 +18,7 @@ def train_model(model, train_dataset, val_dataset, learning_rate):
     model.compile(
         optimizer=Adam(learning_rate=learning_rate),
         loss={'out1': masked_sparse_loss, 'out2': masked_sparse_loss},
-        loss_weights={'out1': 1.0, 'out2': 5.0},
+        loss_weights={'out1': 1.0, 'out2': 1.5},
         metrics={'out1': 'accuracy', 'out2': 'accuracy'}
     )
 
@@ -35,7 +35,7 @@ def train_model(model, train_dataset, val_dataset, learning_rate):
     )
     return history
 
-def plot_mtl_history(history, path):
+def plot_mtl_history(history):
     """
     Plota as curvas de Acurácia e Loss para um modelo Multi-Task Learning (MTL)
     com duas saídas: 'out1' e 'out2'.

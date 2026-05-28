@@ -3,7 +3,7 @@ import json
 import tensorflow as tf
 from src import config
 from src.data_pipeline.transforms import load_img_info
-import random
+from random import shuffle
 
 def load_annotations(json_path):
     # Loads json annotations, mapping image id to its type of damage
@@ -19,7 +19,7 @@ def load_annotations(json_path):
         mapping[annot.get('image_id')] = annot.get('category_id') - 1
     return mapping
 
-def build_dataset_lists(dir_dmg, json_path, dir_sev, severity_labels_distribution):
+def build_dataset_lists(dir_dmg, json_path, dir_sev, severity_labels_distribution, oversampling_factor):
     # Secures correct pairing between file paths and labels
     file_paths = []
     labels = []
@@ -59,9 +59,11 @@ def build_dataset_lists(dir_dmg, json_path, dir_sev, severity_labels_distributio
                 for root, _, files in os.walk(subdir_path):
                     for file in files:
                         full_path = os.path.join(root, file)
-                        file_paths.append(full_path)
-                        # As it comes from dataset 2, there is severity, but not the type of damage
-                        labels.append([-1, current_sev_label])
+                        # Appends the same file for oversampling_factor size, so the proportion from dataset 1 to 2 stays almost equal
+                        for _ in range(oversampling_factor):
+                            file_paths.append(full_path)
+                            # As it comes from dataset 2, there is severity, but not the type of damage
+                            labels.append([-1, current_sev_label])
                         
     return file_paths, labels
 
@@ -71,21 +73,29 @@ def get_train_val_datasets():
     # Folder 1 -> Severity: minor (0), Folder 2 -> Severity: moderate (1), Folder 3 -> Severity: severe (2)
     sev_distribution = [0, 1, 2]
     
-    # Building training lists
+    # Building training lists, oversampling factor = 5 ([ds1 train] = 7000, [ds2 train] = 1300)
     train_files, train_labels = build_dataset_lists(
-        config.DIR_TRAIN_DMG_CROP, config.JSON_TRAIN_PATH, config.DIR_TRAIN_SEV_CROP, sev_distribution
+        config.DIR_TRAIN_DMG_CROP, config.JSON_TRAIN_PATH, config.DIR_TRAIN_SEV_CROP, sev_distribution, 5
     )
 
-    temp_list = list(zip(train_files, train_labels))
-    random.shuffle(temp_list)
-    train_files, train_labels = zip(*temp_list)
-    train_files = list(train_files)
-    train_labels = list(train_labels)
+    # Better way to shuffle dataset 
+    idx_train = list(range(len(train_files)))
+    shuffle(idx_train)
 
-    # Building validation lists
+    train_files = [train_files[i] for i in idx_train]
+    train_labels = [train_labels[i] for i in idx_train]
+
+    # Building validation lists, oversampling factor = 8 ([ds1 val] = 2000, [ds2 val] = 260)
     val_files, val_labels = build_dataset_lists(
-        config.DIR_VAL_DMG_CROP, config.JSON_VAL_PATH, config.DIR_VAL_SEV_CROP, sev_distribution
+        config.DIR_VAL_DMG_CROP, config.JSON_VAL_PATH, config.DIR_VAL_SEV_CROP, sev_distribution, 8
     )
+
+    # Shuffling validation dataset
+    idx_val = list(range(len(val_files)))
+    shuffle(idx_val)
+
+    val_files = [val_files[i] for i in idx_val]
+    val_labels = [val_labels[i] for i in idx_val]
     
     # Creating tf.data tensors
     train_dataset = tf.data.Dataset.from_tensor_slices((train_files, train_labels))
