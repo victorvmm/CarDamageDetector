@@ -40,18 +40,6 @@ Os blocos são conectados, por fim, às heads das tarefas por meio do GlobalAVGp
 
 # A FAZER
 
-model = YOLO("runs/detect/train/weights/best.pt")
-
-results = model.predict(
-    source="images/",
-    save=True,
-    save_crop=True
-) 
-
-Isso vai salvar as imagens cortadas nas partes certas
-
-Cortar as imagens e usar elas como dataset para rodar o modelo classificador MTL
-
 Criar notebook para data viz - imagens
 
 Criar API
@@ -62,7 +50,6 @@ Criar testes de modelo, API e dados
 
 # Aprender
 
-Visão computacional - YOLO 
 Docker
 FastAPI
 Pydantic + Gunicorn

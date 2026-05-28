@@ -18,16 +18,16 @@ def train_model(model, train_dataset, val_dataset, learning_rate):
     model.compile(
         optimizer=Adam(learning_rate=learning_rate),
         loss={'out1': masked_sparse_loss, 'out2': masked_sparse_loss},
-        loss_weights={'out1': 1.0, 'out2': 3.5},
+        loss_weights={'out1': 1.0, 'out2': 5.0},
         metrics={'out1': 'accuracy', 'out2': 'accuracy'}
     )
 
-    checkpoint_path = '.weights.h5'
+    checkpoint_path = 'src/classifier/model.weights.h5'
     checkpoint = ModelCheckpoint(checkpoint_path, save_best_only=True, save_weights_only=True)
 
     history = model.fit(
         train_dataset, 
-        epochs=30, 
+        epochs=20, 
         validation_data=val_dataset, 
         validation_steps=30, 
         callbacks=[ReduceLROnPlateau('val_loss', 0.8), checkpoint],
@@ -35,7 +35,7 @@ def train_model(model, train_dataset, val_dataset, learning_rate):
     )
     return history
 
-def plot_mtl_history(history):
+def plot_mtl_history(history, path):
     """
     Plota as curvas de Acurácia e Loss para um modelo Multi-Task Learning (MTL)
     com duas saídas: 'out1' e 'out2'.
@@ -95,6 +95,7 @@ def plot_mtl_history(history):
     plt.tight_layout(rect=[0, 0.03, 1, 0.95])
     plt.show()
 
-history = train_model(model, train_dataset, val_dataset, 5e-3)
+if __name__ == '__main__':
+    history = train_model(model, train_dataset, val_dataset, 5e-3)
 
-plot_mtl_history(history)
+    plot_mtl_history(history)

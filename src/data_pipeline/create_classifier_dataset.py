@@ -32,8 +32,9 @@ def build_dataset_lists(dir_dmg, json_path, dir_sev, severity_labels_distributio
             if os.path.isfile(full_path):
                 # Extracts file ID (ex: "000000123.jpg" -> 123)
                 try:
-                    full_id = int(os.path.splitext(filename)[0])
-                    img_id = int(full_id.split('_')[0])
+                    full_id = os.path.splitext(filename)[0]
+                    id = full_id.split('_')[0]
+                    img_id = int(id)
                 except ValueError:
                     continue
                 
@@ -75,11 +76,11 @@ def get_train_val_datasets():
         config.DIR_TRAIN_DMG_CROP, config.JSON_TRAIN_PATH, config.DIR_TRAIN_SEV_CROP, sev_distribution
     )
 
-    '''temp_list = list(zip(train_files, train_labels))
+    temp_list = list(zip(train_files, train_labels))
     random.shuffle(temp_list)
     train_files, train_labels = zip(*temp_list)
     train_files = list(train_files)
-    train_labels = list(train_labels)'''
+    train_labels = list(train_labels)
 
     # Building validation lists
     val_files, val_labels = build_dataset_lists(
