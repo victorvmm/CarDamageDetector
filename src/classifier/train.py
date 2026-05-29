@@ -23,7 +23,14 @@ def train_model(model, train_dataset, val_dataset, learning_rate):
     )
 
     checkpoint_path = 'src/classifier/model.weights.h5'
-    checkpoint = ModelCheckpoint(checkpoint_path, save_best_only=True, save_weights_only=True)
+    checkpoint = ModelCheckpoint(
+        filepath=checkpoint_path,
+        save_best_only=True,       
+        save_weights_only=True,    
+        monitor='val_loss',        
+        mode='min',               
+        verbose=1
+    )
 
     history = model.fit(
         train_dataset, 
