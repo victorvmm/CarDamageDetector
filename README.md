@@ -41,6 +41,8 @@ Os blocos são conectados, por fim, às heads das tarefas por meio do GlobalAVGp
 
 # A FAZER
 
+Tentar aumentar padding pra 0.15-0.20 e tentar rodar o modelo novamente
+
 Criar notebook para data viz - imagens
 
 Criar API
