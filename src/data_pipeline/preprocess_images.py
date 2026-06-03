@@ -51,16 +51,16 @@ def process_crop_images(origin_path, final_path, weights, padding=0):
 if __name__ == '__main__':
     weights_path = r'C:\Users\vmm\CarDamageDetector\src\detector\weights\best.pt' 
 
-    process_crop_images(config.DIR_TRAIN_DMG, config.DIR_TRAIN_DMG_CROP, weights_path, padding=0.05) # Crops images from training and validation dataset 1
-    process_crop_images(config.DIR_VAL_DMG, config.DIR_VAL_DMG_CROP, weights_path, padding=0.05)
+    process_crop_images(config.DIR_TRAIN_DMG, config.DIR_TRAIN_DMG_CROP, weights_path, padding=0.20) # Crops images from training and validation dataset 1
+    process_crop_images(config.DIR_VAL_DMG, config.DIR_VAL_DMG_CROP, weights_path, padding=0.20)
 
     subfolder_sev = ['minor', 'moderate', 'severe']
     # Crops images from training and validation dataset 2
     for folder in subfolder_sev: 
         train = os.path.join(config.DIR_TRAIN_SEV, folder)
         final_train = os.path.join(config.DIR_TRAIN_SEV_CROP, folder)
-        process_crop_images(train, final_train, weights_path, padding=0.05)
+        process_crop_images(train, final_train, weights_path, padding=0.20)
         
         val = os.path.join(config.DIR_VAL_SEV, folder)
         final_val = os.path.join(config.DIR_VAL_SEV_CROP, folder)
-        process_crop_images(val, final_val, weights_path, padding=0.05)
+        process_crop_images(val, final_val, weights_path, padding=0.20)

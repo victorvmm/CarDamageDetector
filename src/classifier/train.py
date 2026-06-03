@@ -103,6 +103,6 @@ def plot_mtl_history(history):
     plt.show()
 
 if __name__ == '__main__':
-    history = train_model(model, train_dataset, val_dataset, 5e-3)
+    history = train_model(model, train_dataset, val_dataset, 3e-4)
 
     plot_mtl_history(history)
