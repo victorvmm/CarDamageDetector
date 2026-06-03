@@ -18,7 +18,7 @@ def train_model(model, train_dataset, val_dataset, learning_rate):
     model.compile(
         optimizer=Adam(learning_rate=learning_rate),
         loss={'out1': masked_sparse_loss, 'out2': masked_sparse_loss},
-        loss_weights={'out1': 1.0, 'out2': 1.5},
+        loss_weights={'out1': 1.0, 'out2': 1.0},
         metrics={'out1': 'accuracy', 'out2': 'accuracy'}
     )
 
@@ -37,7 +37,7 @@ def train_model(model, train_dataset, val_dataset, learning_rate):
         epochs=20, 
         validation_data=val_dataset, 
         validation_steps=30, 
-        callbacks=[ReduceLROnPlateau('val_loss', 0.8), checkpoint],
+        callbacks=[ReduceLROnPlateau('val_loss', 0.6, patience=3), checkpoint],
         verbose=1
     )
     return history
