@@ -1,5 +1,6 @@
 import tensorflow as tf
 from tensorflow.keras.optimizers import Adam
+from tensorflow.keras.losses import SparseCategoricalCrossentropy
 from tensorflow.keras.callbacks import ReduceLROnPlateau, ModelCheckpoint
 import matplotlib.pyplot as plt
 from src.data_pipeline import get_train_val_datasets
@@ -17,9 +18,8 @@ def train_model(model, train_dataset, val_dataset, learning_rate):
     
     model.compile(
         optimizer=Adam(learning_rate=learning_rate),
-        loss={'out1': masked_sparse_loss, 'out2': masked_sparse_loss},
-        loss_weights={'out1': 1.0, 'out2': 1.0},
-        metrics={'out1': 'accuracy', 'out2': 'accuracy'}
+        loss=SparseCategoricalCrossentropy(),
+        metrics=['accuracy']
     )
 
     checkpoint_path = 'src/classifier/model.weights.h5'
@@ -105,4 +105,4 @@ def plot_mtl_history(history):
 if __name__ == '__main__':
     history = train_model(model, train_dataset, val_dataset, 3e-4)
 
-    plot_mtl_history(history)
+    #plot_mtl_history(history)

@@ -36,12 +36,7 @@ class MyModel(Model):
         self.drop_dmg = Dropout(0.3)
         self.out_dmg = Dense(6, activation='softmax')
 
-        # Head for task 2
-        self.dense_sev = Dense(units=64, activation='relu')
-        self.drop_sev = Dropout(0.3)
-        self.out_sev = Dense(3, activation='softmax')
-
-    def call(self, inputs, training=False):
+    def call(self, inputs, training=True):
         x = self.conv1(inputs)
         x = self.bn1(x, training=training) # BN precisa saber se está em treino!
         x = tf.nn.relu(x)
@@ -71,10 +66,7 @@ class MyModel(Model):
         x_dmg = self.drop_dmg(x_dmg, training=training)
         output1 = self.out_dmg(x_dmg)
 
-        x_sev = self.dense_sev(x_shared)
-        x_sev = self.drop_sev(x_sev, training=training)
-        output2 = self.out_sev(x_sev)
-        return {'out1': output1, 'out2': output2}
+        return output1
     
 
 def masked_sparse_loss(y_true, y_pred):

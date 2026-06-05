@@ -29,8 +29,4 @@ def load_img_info(path, label):
 
     img = img / 255.0  # Normalization
 
-    # Unpack pipeline labels
-    label_dmg = label[0]
-    label_severity = label[1]
-
-    return img, (label_dmg, label_severity) # returns x, y
+    return img, label # returns x, y
