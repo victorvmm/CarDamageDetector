@@ -1,7 +1,7 @@
 import tensorflow as tf
 
 from tensorflow.keras.models import Model
-from tensorflow.keras.layers import Dense, BatchNormalization, Dropout, MaxPooling2D, Conv2D, GlobalAveragePooling2D, Input
+from tensorflow.keras.layers import Dense, BatchNormalization, Dropout, MaxPooling2D, Conv2D, GlobalAveragePooling2D
 
 
 class MyModel(Model):
@@ -38,7 +38,7 @@ class MyModel(Model):
 
     def call(self, inputs, training=True):
         x = self.conv1(inputs)
-        x = self.bn1(x, training=training) # BN precisa saber se está em treino!
+        x = self.bn1(x, training=training)
         x = tf.nn.relu(x)
         x = self.pool1(x)
         
@@ -68,24 +68,3 @@ class MyModel(Model):
 
         return output1
     
-
-def masked_sparse_loss(y_true, y_pred):
-    # creates a mask that returns 1.0 if label != -1, avoids error in cases where label = -1
-    mask = tf.math.not_equal(y_true, -1)
-    mask = tf.cast(mask, tf.float32)
-
-    # changes -1 to 0 temporarily so Keras doesn't return error when applying loss 
-    y_true_safe = tf.maximum(y_true, 0)
-
-    loss = tf.keras.losses.sparse_categorical_crossentropy(y_true_safe, y_pred)
-
-    # applies mask, multiply by 0 all images that had -1 in its label before
-    loss_mask = loss * mask
-
-    # loss mean, dividing loss by number of valid imagens in batch
-    sum_loss = tf.reduce_sum(loss_mask)
-
-    # avoids division by 0 error in case all images in a batch have -1 label
-    valid_images = tf.maximum(tf.reduce_sum(mask), 1.0)
-
-    return sum_loss / valid_images

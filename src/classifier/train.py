@@ -5,14 +5,7 @@ from tensorflow.keras.callbacks import ReduceLROnPlateau, ModelCheckpoint
 import matplotlib.pyplot as plt
 from src.data_pipeline import get_train_val_datasets
 from src import config
-from src.classifier.architecture import MyModel, masked_sparse_loss
-
-train_dataset, val_dataset = get_train_val_datasets()
-
-model = MyModel(input_shape=(config.IMG_HEIGHT, config.IMG_WIDTH, config.CHANNELS))
-
-model(tf.random.normal((1, config.IMG_HEIGHT, config.IMG_WIDTH, config.CHANNELS)))
-model.summary()
+from src.classifier.architecture import MyModel
 
 def train_model(model, train_dataset, val_dataset, learning_rate):
     
@@ -34,75 +27,50 @@ def train_model(model, train_dataset, val_dataset, learning_rate):
 
     history = model.fit(
         train_dataset, 
-        epochs=20, 
+        epochs=30, 
         validation_data=val_dataset, 
         validation_steps=30, 
-        callbacks=[ReduceLROnPlateau('val_loss', 0.6, patience=3), checkpoint],
+        callbacks=[ReduceLROnPlateau('val_loss', 0.7, patience=3), checkpoint],
         verbose=1
     )
     return history
 
-def plot_mtl_history(history):
-    """
-    Plota as curvas de Acurácia e Loss para um modelo Multi-Task Learning (MTL)
-    com duas saídas: 'out1' e 'out2'.
-    """
-    # O Keras guarda as métricas neste dicionário
+def plot_model_history(history):
     metrics = history.history
 
-    # Criando uma figura com 2 linhas e 2 colunas (Painel 2x2)
-    fig, axes = plt.subplots(nrows=2, ncols=2, figsize=(16, 12))
-    fig.suptitle('Diagnóstico de Treinamento: Modelo Multi-Task', fontsize=18, fontweight='bold')
+    fig, axes = plt.subplots(nrows=1, ncols=2, figsize=(16, 12))
+    fig.suptitle('Classifier model training', fontsize=18, fontweight='bold')
 
-    # ==========================================
-    # LINHA 1: GRÁFICOS DE ACURÁCIA
-    # ==========================================
-    
-    # 1. Acurácia - Tarefa 1 (out1)
-    axes[0, 0].plot(metrics['out1_accuracy'], label='Treino', linewidth=2, color='blue')
-    axes[0, 0].plot(metrics['val_out1_accuracy'], label='Validação', linewidth=2, linestyle='--', color='orange')
-    axes[0, 0].set_title('Acurácia: Tarefa 1 (Dano)', fontsize=14)
-    axes[0, 0].set_ylabel('Acurácia')
-    axes[0, 0].set_xlabel('Época')
-    axes[0, 0].legend()
-    axes[0, 0].grid(True, linestyle=':', alpha=0.7)
+    # Plotting accuracy x epoch
+    axes[0].plot(metrics['accuracy'], label='Training', linewidth=2, color='blue')
+    axes[0].plot(metrics['val_accuracy'], label='Validation', linewidth=2, linestyle='--', color='orange')
+    axes[0].set_title('Accuracy x Epoch', fontsize=14)
+    axes[0].set_ylabel('Accuracy')
+    axes[0].set_xlabel('Epoch')
+    axes[0].legend()
+    axes[0].grid(True, linestyle=':', alpha=0.7)
 
-    # 2. Acurácia - Tarefa 2 (out2)
-    axes[0, 1].plot(metrics['out2_accuracy'], label='Treino', linewidth=2, color='blue')
-    axes[0, 1].plot(metrics['val_out2_accuracy'], label='Validação', linewidth=2, linestyle='--', color='orange')
-    axes[0, 1].set_title('Acurácia: Tarefa 2 (Severidade)', fontsize=14)
-    axes[0, 1].set_ylabel('Acurácia')
-    axes[0, 1].set_xlabel('Época')
-    axes[0, 1].legend()
-    axes[0, 1].grid(True, linestyle=':', alpha=0.7)
+    # Plotting loss x epoch
+    axes[1].plot(metrics['loss'], label='Treino', linewidth=2, color='red')
+    axes[1].plot(metrics['val_loss'], label='Validação', linewidth=2, linestyle='--', color='green')
+    axes[1].set_title('Loss x Epoch', fontsize=14)
+    axes[1].set_ylabel('Loss')
+    axes[1].set_xlabel('Epoch')
+    axes[1].legend()
+    axes[1].grid(True, linestyle=':', alpha=0.7)
 
-    # ==========================================
-    # LINHA 2: GRÁFICOS DE PERDA (LOSS)
-    # ==========================================
-    
-    # 3. Loss - Tarefa 1 (out1)
-    axes[1, 0].plot(metrics['out1_loss'], label='Treino', linewidth=2, color='red')
-    axes[1, 0].plot(metrics['val_out1_loss'], label='Validação', linewidth=2, linestyle='--', color='green')
-    axes[1, 0].set_title('Perda (Loss): Tarefa 1', fontsize=14)
-    axes[1, 0].set_ylabel('Loss (Erro)')
-    axes[1, 0].set_xlabel('Época')
-    axes[1, 0].legend()
-    axes[1, 0].grid(True, linestyle=':', alpha=0.7)
-
-    # 4. Loss - Tarefa 2 (out2)
-    axes[1, 1].plot(metrics['out2_loss'], label='Treino', linewidth=2, color='red')
-    axes[1, 1].plot(metrics['val_out2_loss'], label='Validação', linewidth=2, linestyle='--', color='green')
-    axes[1, 1].set_title('Perda (Loss): Tarefa 2', fontsize=14)
-    axes[1, 1].set_ylabel('Loss (Erro)')
-    axes[1, 1].set_xlabel('Época')
-    axes[1, 1].legend()
-    axes[1, 1].grid(True, linestyle=':', alpha=0.7)
-
-    # Ajusta o espaçamento para os títulos não se sobreporem
     plt.tight_layout(rect=[0, 0.03, 1, 0.95])
     plt.show()
 
 if __name__ == '__main__':
+    train_dataset, val_dataset = get_train_val_datasets()
+
+    model = MyModel(input_shape=(config.IMG_HEIGHT, config.IMG_WIDTH, config.CHANNELS))
+
+    # Show model summary
+    model(tf.random.normal((1, config.IMG_HEIGHT, config.IMG_WIDTH, config.CHANNELS)))
+    model.summary()
+
     history = train_model(model, train_dataset, val_dataset, 3e-4)
 
-    #plot_mtl_history(history)
+    plot_model_history(history)
