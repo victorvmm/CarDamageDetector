@@ -1,15 +1,7 @@
 # CarDamageDetector
-Car damage detector model - Multi-task learning CNN
+Car damage detector model - CNN
 
 # Descrição
-CNN (Multi-task e transfer learning):
-
-Rede neural com backbone compartilhado que se divide em múltiplas heads para realizar tarefas simultaneas a partir de uma unica imagem
-
-Tarefa 1: Qual o tipo de dano? (C)
-
-Tarefa 2: Qual a severidade do dano? (C)
-
 Engineering/Ops:
     
 CI/CD pipeline: configure um github action que, a cada commit, roda testes unitários. O teste deve verificar se o modelo consegue processar diferentes tamanhos de imagem sem quebrar e se as duas cabeças da rede retornam valores no range esperado. Criar arquivo .github/workflows
