@@ -10,39 +10,9 @@ API de alta performance: deploy com FastAPI e Gunicorn, usando Pydantic para val
 
 Dockerizar tudo - criar DockerFile
 
-# Técnicas usadas
-MTL - soft parameter sharing
-Data augmentation
-Valor sentinela
-Loss function customizada
-Oversampling no dataset 2
-
-# Abordagem
-
-Usando soft parameter sharing
-
-Abordagem 1: transfer learning com EfficientNetV2B3 - 27% de accuracy da saída 1 e 16% da saída 2
-Underfitting, modelo muito complexo para um dataset relativamente pequeno, motivo dos erros. (+-13M de parâmetros)
-1ª etapa: transfer learning clássico - rodar com modelo base congelado
-2ª etapa: fine tuning com descongelamento das 30 camadas finais do modelo base com taxa de aprendizado 0.00001 (para não quebrar os pesos da 1ª etapa)
-
-Abordagem 2: CNN criada do zero - 36.7% de accuracy da saída 1 e 18.7% da saída 2
-Utiliza quatro blocos convolucionais, compostos por uma camada convolucional, uma de normalização, uma função de ativação e uma camada de maxpooling
-Os blocos são conectados, por fim, às heads das tarefas por meio do GlobalAVGpool
-
-Abordagem 3:
-treino 1 - padding 5% e learning rate = 0.005 - 27% saídas 1 e 2
-treino 2 - padding 20% e learning rate = 0.0003 - 30% saídas 1 e 2
-treino 3 - padding 20%, learning rate = 3e-4, tentando novamente com patience=3 no callback e coeficientes de perda = 1.0
-treino 4 - padding 20%, learning rate = 3e-4, remoção da head severidade, passa a ser apenas tipo de dano
-
-
 # A FAZER
 
-
 Criar notebook para data viz - imagens
-
-Criar API
 
 Criar dockerfile
 
@@ -51,8 +21,6 @@ Criar testes de modelo, API e dados
 # Aprender
 
 Docker
-FastAPI
-Pydantic + Gunicorn
 Github actions
 
 # Fonte

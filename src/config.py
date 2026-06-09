@@ -8,6 +8,8 @@ CHANNELS = 3
 BATCH_SIZE = 32
 BUFFER_SIZE = 2000
 
+CLASS_LABELS = ['Dent', 'Scratch', 'Crack', 'Glass shatter', 'Lamp broken', 'Tire flat']
+
 # Data paths
 DATA_DIR = os.path.abspath(os.path.join(os.path.dirname(__file__), "..", "data"))
 
