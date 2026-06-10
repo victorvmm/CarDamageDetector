@@ -1,5 +1,5 @@
 from fastapi import FastAPI
-from src.api.api.endpoints.v1.routes import router
+from src.api.endpoints.v1.routes import router
 
 app = FastAPI(
     title="Car Damage Detector API",

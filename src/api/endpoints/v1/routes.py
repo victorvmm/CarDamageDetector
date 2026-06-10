@@ -1,7 +1,6 @@
 from fastapi import APIRouter, UploadFile, File, HTTPException, status
 from src.api.schemas.requests import PredictionResponse, DamageDetail
 from src.api.ml.pipeline import Pipeline
-from src.api.core.config import settings 
 
 router = APIRouter()
 

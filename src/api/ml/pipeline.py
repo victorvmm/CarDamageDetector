@@ -1,5 +1,5 @@
 from src.classifier import MyModel
-from core.config import settings
+from src.api.core.config import settings
 import tensorflow as tf
 from src import config
 import io
