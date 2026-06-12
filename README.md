@@ -16,11 +16,8 @@ Criar notebook para data viz - imagens
 
 Criar dockerfile
 
-Criar testes de modelo, API e dados
-
 # Aprender
 
-Pytest
 Docker
 Github actions
 
