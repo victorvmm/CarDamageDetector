@@ -8,15 +8,11 @@ CI/CD pipeline: configure um github action que, a cada commit, roda testes unit√
 
 API de alta performance: deploy com FastAPI e Gunicorn, usando Pydantic para validar imagem enviada n√£o corrompida
 
-Dockerizar tudo - criar DockerFile
-
 # A FAZER
 
 Criar notebook para data viz - imagens
 
 Criar dockerfile
-
-Criar testes de modelo, API e dados
 
 # Aprender
 
