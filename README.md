@@ -20,15 +20,11 @@ Criar testes de modelo, API e dados
 
 # Aprender
 
-Pytest
-Docker
 Github actions
 
 # Fonte
 
 https://cardd-ustc.github.io/ - CarDD (Tarefa 1) - Pegar licença
-
-https://www.kaggle.com/datasets/prajwalbhamere/car-damage-severity-dataset/data?select=data3a - Tarefa 2
 
 
 # YOLO 
