@@ -6,13 +6,12 @@ Engineering/Ops:
     
 CI/CD pipeline: configure um github action que, a cada commit, roda testes unitários. O teste deve verificar se o modelo consegue processar diferentes tamanhos de imagem sem quebrar e se as duas cabeças da rede retornam valores no range esperado. Criar arquivo .github/workflows
 
-API de alta performance: deploy com FastAPI e Gunicorn, usando Pydantic para validar imagem enviada não corrompida
-
 # A FAZER
 
-Criar notebook para data viz - imagens
-
-Criar dockerfile
+Criar método build() na arquitetura da CNN, com todas as camadas + super(MyModel, self).build(input_shape) no fim
+Resolver teste 3 com problema de lista vazia
+Criar pipeline CI/CD com workflow
+Criar imagem do dockerfile e testar
 
 # Aprender
 

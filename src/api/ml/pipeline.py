@@ -9,9 +9,10 @@ from ultralytics import YOLO
 
 
 class Pipeline:
-    def __init__(self):
+    def __init__(self, input_shape):
         self.yolo_model = YOLO(settings.YOLO_WEIGHTS_PATH)
         self.cnn_model = MyModel()
+        self.cnn_model.build(input_shape=input_shape)
         self.cnn_model.load_weights(settings.CNN_WEIGHTS_PATH)
 
     def predict(self, image_bytes: bytes):
@@ -32,7 +33,7 @@ class Pipeline:
             predicted_class = np.argmax(cnn_pred)
             confidence = float(cnn_pred[predicted_class])
             detected_damages.append({
-                "bounding box": [x1,y1,x2,y2],
+                "bounding_box": [x1,y1,x2,y2],
                 "damage_type": config.CLASS_LABELS[predicted_class],
                 "confidence": confidence
             })

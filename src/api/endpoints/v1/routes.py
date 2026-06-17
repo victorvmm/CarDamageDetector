@@ -1,10 +1,11 @@
 from fastapi import APIRouter, UploadFile, File, HTTPException, status
 from src.api.schemas.requests import PredictionResponse, DamageDetail
 from src.api.ml.pipeline import Pipeline
+from src import config
 
 router = APIRouter()
 
-pred_pipeline = Pipeline()
+pred_pipeline = Pipeline(input_shape=(1, config.IMG_HEIGHT, config.IMG_WIDTH, config.CHANNELS))
 
 @router.post("/predict", response_model=PredictionResponse)
 async def predict_damage(file: UploadFile = File(...)):
@@ -17,7 +18,7 @@ async def predict_damage(file: UploadFile = File(...)):
     
     details_list = [
         DamageDetail(
-            bounding_box=item["bounding box"],
+            bounding_box=item["bounding_box"],
             damage_type=item["damage_type"],
             confidence=item["confidence"]
         ) for item in prediction
