@@ -8,6 +8,7 @@ class MyModel(Model):
     def __init__(self, **kwargs):
         super(MyModel, self).__init__(**kwargs)
 
+    def build(self, input_shape):
         # Block 1: border detection
         self.conv1 = Conv2D(filters=32, kernel_size=(3,3), padding='same')
         self.bn1 = BatchNormalization()
@@ -35,6 +36,8 @@ class MyModel(Model):
         self.dense_dmg = Dense(units=64, activation='relu')
         self.drop_dmg = Dropout(0.3)
         self.out_dmg = Dense(6, activation='softmax')
+
+        super(MyModel, self).build(input_shape)
 
     def call(self, inputs, training=True):
         x = self.conv1(inputs)

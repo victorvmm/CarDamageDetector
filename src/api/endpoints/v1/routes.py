@@ -5,7 +5,7 @@ from src import config
 
 router = APIRouter()
 
-pred_pipeline = Pipeline(input_shape=(1, config.IMG_HEIGHT, config.IMG_WIDTH, config.CHANNELS))
+pred_pipeline = Pipeline(input_shape=(config.IMG_HEIGHT, config.IMG_WIDTH, config.CHANNELS))
 
 @router.post("/predict", response_model=PredictionResponse)
 async def predict_damage(file: UploadFile = File(...)):
@@ -27,5 +27,5 @@ async def predict_damage(file: UploadFile = File(...)):
     return PredictionResponse(
         filename=file.filename,
         total_damages_found=len(details_list),
-        details=details_list
+        result=details_list
     )

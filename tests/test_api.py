@@ -30,7 +30,7 @@ def test_predict_invalid_file_type():
     assert "image" in response.json()["detail"].lower()
 
 # Tests if model can predict an damage successfully
-@patch("src.api.ml.pipeline.Pipeline.predict")
+@patch("src.api.endpoints.v1.routes.pred_pipeline.predict")
 def test_predict_success(mock_process_image):
     mock_process_image.return_value = [
         {
@@ -39,6 +39,7 @@ def test_predict_success(mock_process_image):
             "confidence": 0.95
         }
     ]
+    print(mock_process_image.called)
     
     dummy_image = create_dummy_image()
     files = {"file": ("car_test.jpg", dummy_image, "image/jpeg")}
@@ -52,7 +53,7 @@ def test_predict_success(mock_process_image):
     assert data["result"][0]["damage_type"] == "Dent"
 
 # Tests if model can predict an image with no damage
-@patch('src.api.ml.pipeline.Pipeline.predict')
+@patch("src.api.endpoints.v1.routes.pred_pipeline.predict")
 def test_predict_no_damage(mock_process_image):
     mock_process_image.return_value = []
 

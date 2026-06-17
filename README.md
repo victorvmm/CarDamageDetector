@@ -8,8 +8,6 @@ CI/CD pipeline: configure um github action que, a cada commit, roda testes unit√
 
 # A FAZER
 
-Criar m√©todo build() na arquitetura da CNN, com todas as camadas + super(MyModel, self).build(input_shape) no fim
-Resolver teste 3 com problema de lista vazia
 Criar pipeline CI/CD com workflow
 Criar imagem do dockerfile e testar
 
