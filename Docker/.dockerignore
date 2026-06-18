@@ -17,6 +17,3 @@ __pycache__/
 .github/
 
 .env
-
-*.ipynb
-notebooks/
