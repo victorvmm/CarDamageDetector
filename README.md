@@ -1,63 +1,58 @@
 # Car Damage Detector API
 
-Uma API de alta performance para diagnóstico automatizado de sinistros automotivos, utilizando uma arquitetura de Deep Learning em Duas Etapas (Two-Stage Pipeline) com FastAPI e Docker.
+High performance API to automate car damage detection, through a deep learning two-stage pipeline using FastAPI, Docker, TensorFlow and YOLO.
 
-## Sobre o Projeto
+## About the project
 
-Este projeto resolve o desafio de identificar e classificar danos em veículos em cenários do mundo real (fotos com fundo ruidoso, diferentes ângulos e iluminações). [cite_start]Em vez de utilizar uma única rede neural para processar a imagem inteira, o sistema orquestra dois modelos de Inteligência Artificial trabalhando em cadeia para garantir alta precisão[cite: 954].
+This project solves the challenge of identifying and classifying damages in vehicles in real world situations (Noisy images, different angles and lighting). Instead of using a single neural network to process the full image, the system orchestrates two models (Custom CNN and YOLOv8) working in chain to guarantee a higher precision.
 
-## Arquitetura do Sistema (Two-Stage Pipeline)
+## System architecture (Two-Stage Pipeline)
 
-* [cite_start]**Etapa 1 (Localização):** Um modelo YOLOv8 atua como o "olho" do sistema, processando a foto original para localizar o dano e extrair um recorte (crop) exato do metal retorcido[cite: 955].
-* [cite_start]**Etapa 2 (Classificação):** O recorte limpo é passado para uma CNN Customizada (construída do zero no Keras/TensorFlow), que atua como a "especialista" focada apenas na textura da lataria para classificar o Tipo de Dano e a Severidade[cite: 956, 958].
-* [cite_start]**A Ponte (API Web):** O backend foi construído com FastAPI e utiliza o Pydantic para validação rigorosa dos contratos de dados (schemas), garantindo que o JSON de resposta seja seguro e estruturado[cite: 1453].
+* Stage 1: YOLOv8 model acts as the system's eye, processing the original image to identify the damage area and generate cropped images of the corresponding region.
 
-## Estrutura do Projeto
+* Stage 2: the cropped image passes through a custom CNN (built from scratch with TensorFlow), which focuses only on the vehicle bodywork texture to classify the type of damage.
 
-* `src/api/`: Controladores de tráfego HTTP (FastAPI, Rotas e Health Checks).
-* `src/schemas/`: Contratos de validação de entrada e saída de dados via Pydantic.
-* `src/model/`: Arquitetura da CNN, script de treinamento e pesos do modelo (.h5).
-* `src/detector/`: Configurações e pesos (.pt) do modelo YOLOv8.
-* `tests/`: Suite de testes unitários simulando (mocking) o pipeline de ML com Pytest.
-* `.github/workflows/`: Pipeline de CI/CD para execução automatizada de testes e build.
+* Stage 3: the prediction is shown to the user through FastAPI, combined with Pydantic for strict data validation
 
-## Como Executar o Projeto (Docker)
+## Project Structure
 
-A aplicação foi totalmente empacotada em containers para garantir a reprodutibilidade. Você não precisa instalar Python ou TensorFlow na sua máquina, apenas o Docker.
+* `src/api/`: Complete API structure (Schemas, core modules, application entry point, routes and prediction pipeline)
+* `src/classifier/`: CNN architecture, training procedures and performance visualization (Loss vs. Epoch, Accuracy vs. Epoch)
+* `src/data_pipeline/`: Data processing pipelines, including image cropping, data augmentation and dataset generation for each model 
+* `src/detector/`: YOLOv8 configurations files and training settings
+* `tests/`: Unit tests using Pytest, including mocked prediction pipeline scenarios
+* `.github/workflows/`: CI/CD workflows for automated testing and build processes
 
-**1. Clone o repositório**
-git clone https://github.com/SEU_USUARIO/car-damage-detector.git
-cd car-damage-detector
+## How to execute the project
 
-**2. Construa a imagem Docker**
-docker build -t car-damage-api .
+The application was packed in containers to ensure reproducibility
+
+**1. Clone repository**
+git clone https://github.com/victorvmm/CarDamageDetector.git
+cd CarDamageDetector
+
+**2. Build Docker image**
+docker build -f Docker/Dockerfile -t car-damage-detector .
 
 **3. Inicie o Container**
-docker run -p 8000:8000 car-damage-api
+docker run -p 8000:8000 car-damage-detector
+uvicorn src.api.main:app
 
-**4. Teste a API**
-Acesse a documentação interativa nativa do FastAPI no seu navegador através de:
+**4. API testing**
+Access native interactive FastAPI documentation through your navigator via:
 http://localhost:8000/docs
 
-Lá você poderá fazer o upload de uma imagem do seu computador e ver o pipeline completo identificando as caixas delimitadoras e classificando o dano em tempo real.
 
-## Licenças e Fontes de Dados
+There you open the "POST" route, click on "Try it out", upload your file and execute to get the prediction
 
-Este projeto utiliza ferramentas de código aberto e conjuntos de dados acadêmicos. Todos os créditos aos seus respectivos criadores:
+## Licenses and data sources
 
-* **YOLOv8:** A etapa de detecção utiliza a arquitetura YOLOv8 da Ultralytics, distribuída sob a licença AGPL-3.0.
-* [cite_start]**Dataset CarDD:** Os dados originais para treinamento das características de danos foram baseados no CarDD (Car Damage Detection Dataset) [cite: 462, 463][cite_start], mantido para fins de pesquisa e desenvolvimento[cite: 466].
-* **Dataset de Severidade:** Imagens complementares baseadas em coleções públicas do Kaggle e Roboflow Universe.
+This project uses open source tools and academic datasets. All the credits to its related creators:
 
----
-Desenvolvido por [Seu Nome](Link para seu LinkedIn).
+* **YOLOv8:** Detection stage uses YOLOv8 architecture from Ultralytics, distributed by AGPL-3.0 license.
 
-https://cardd-ustc.github.io/ - CarDD (Tarefa 1) - Pegar licença
-
-
-# YOLO 
-
-@software{yolov8_ultralytics,
+@software{
+  yolov8_ultralytics,
   author = {Glenn Jocher and Ayush Chaurasia and Jing Qiu},
   title = {Ultralytics YOLOv8},
   version = {8.0.0},
@@ -67,7 +62,24 @@ https://cardd-ustc.github.io/ - CarDD (Tarefa 1) - Pegar licença
   license = {AGPL-3.0}
 }
 
-# A fazer
+* **Dataset CarDD:** Original data for both CNN and YOLO training were based on CarDD.
 
-Testar api de fato (enviando imagem real)
-Testar nova imagem de docker 
+https://cardd-ustc.github.io/
+
+@ARTICLE{
+  CarDD, 
+  author={Wang, Xinkuang and Li, Wenjing and Wu, Zhongcheng}, 
+  journal={IEEE Transactions on Intelligent Transportation Systems}, 
+  title={CarDD: A New Dataset for Vision-Based Car Damage Detection}, 
+  year={2023}, 
+  volume={24}, 
+  number={7}, 
+  pages={7202-7214}, 
+  doi={10.1109/TITS.2023.3258480}
+}
+
+---
+Developed by Victor Melo - https://www.linkedin.com/in/victor-melo-m
+
+
+

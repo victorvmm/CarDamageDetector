@@ -21,9 +21,9 @@ class Pipeline:
         yolo_crop = self.yolo_model(img)
         
         detected_damages = []
-
+        
         for box in yolo_crop[0].boxes:
-            x1,y1,x2,y2 = box.xyxy[0].tolist()
+            x1,y1,x2,y2 = box.xyxy[0].int().tolist()
             crop_img = img.crop((x1,y1,x2,y2))
             crop_img = crop_img.resize((224,224))
             img_array = tf.keras.utils.img_to_array(crop_img)
