@@ -23,9 +23,9 @@ This project solves the challenge of identifying and classifying damages in vehi
 * `tests/`: Unit tests using Pytest, including mocked prediction pipeline scenarios
 * `.github/workflows/`: CI/CD workflows for automated testing and build processes
 
-## How to execute the project
+## How to run the project
 
-The application was packed in containers to ensure reproducibility
+The application is containerized using Docker to ensure reproducibility across different environments.
 
 **1. Clone repository**
 git clone https://github.com/victorvmm/CarDamageDetector.git
@@ -34,25 +34,25 @@ cd CarDamageDetector
 **2. Build Docker image**
 docker build -f Docker/Dockerfile -t car-damage-detector .
 
-**3. Inicie o Container**
+**3. Run container**
 docker run -p 8000:8000 car-damage-detector
-uvicorn src.api.main:app
 
 **4. API testing**
-Access native interactive FastAPI documentation through your navigator via:
+Open the FastAPI interactive documentation in your browser:
 http://localhost:8000/docs
 
-
-There you open the "POST" route, click on "Try it out", upload your file and execute to get the prediction
+Expand the POST endpoint, click Try it out, upload an image, and execute the request to obtain the damage prediction.
 
 ## Licenses and data sources
 
-This project uses open source tools and academic datasets. All the credits to its related creators:
+This project is strictly for **personal, educational, and non-commercial portfolio purposes**, adhering to the CarDD dataset licensing terms. The dataset images are **not** distributed in this repository.
 
-* **YOLOv8:** Detection stage uses YOLOv8 architecture from Ultralytics, distributed by AGPL-3.0 license.
+This project uses open-source tools and academic datasets. Full credit goes to their respective creators.
 
-@software{
-  yolov8_ultralytics,
+
+* **YOLOv8**: The damage detection stage is based on the YOLOv8 architecture developed by Ultralytics and distributed under the AGPL-3.0 license.
+
+@software{yolov8_ultralytics,
   author = {Glenn Jocher and Ayush Chaurasia and Jing Qiu},
   title = {Ultralytics YOLOv8},
   version = {8.0.0},
@@ -62,12 +62,14 @@ This project uses open source tools and academic datasets. All the credits to it
   license = {AGPL-3.0}
 }
 
-* **Dataset CarDD:** Original data for both CNN and YOLO training were based on CarDD.
+* **Dataset CarDD:** The datasets used to train both the YOLOv8 detector and the CNN classifier were derived from the CarDD dataset, provided by the PIC Lab at the Chinese Academy of Sciences (CAS) and the University of Science and Technology of China (USTC).
+
+**Original Citation:**
+> Wang, X., Li, W., & Wu, Z. (2023). CarDD: A New Dataset for Vision-Based Car Damage Detection. *IEEE Transactions on Intelligent Transportation Systems*, 24(7), 7202-7214. doi: 10.1109/TITS.2023.3258480.
 
 https://cardd-ustc.github.io/
 
-@ARTICLE{
-  CarDD, 
+@ARTICLE{CarDD, 
   author={Wang, Xinkuang and Li, Wenjing and Wu, Zhongcheng}, 
   journal={IEEE Transactions on Intelligent Transportation Systems}, 
   title={CarDD: A New Dataset for Vision-Based Car Damage Detection}, 
