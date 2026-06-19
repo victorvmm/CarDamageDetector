@@ -12,8 +12,6 @@ This project solves the challenge of identifying and classifying damages in vehi
 
 * Stage 2: the cropped image passes through a custom CNN (built from scratch with TensorFlow), which focuses only on the vehicle bodywork texture to classify the type of damage.
 
-* Stage 3: the prediction is shown to the user through FastAPI, combined with Pydantic for strict data validation
-
 ## Project Structure
 
 * `src/api/`: Complete API structure (Schemas, core modules, application entry point, routes and prediction pipeline)
