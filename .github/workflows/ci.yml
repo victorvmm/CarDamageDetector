@@ -13,9 +13,7 @@ jobs:
     steps:
     - name: Code checkout
       uses: actions/checkout@v4
-      with:
-        lfs: true   # só se usar Git LFS
-
+      
     - name: Configure Python 3.11
       uses: actions/setup-python@v5
       with:
